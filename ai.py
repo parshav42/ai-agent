@@ -6,14 +6,21 @@ client = OpenAI(
     api_key = 'dumy'
 )
 
-result = client.chat.completions.create(
-    model = 'qwen3:4b',
+while True:
+    inp = input('Parshav:')
+    if inp == 'exit':
+        break
+    
+    result = client.chat.completions.create(
+    model = 'qwen3:1.7b',
     messages=[
         {
             'role': 'user',
-            'content': 'Hello, how are you?'
+            'content':inp
         }
     ]
+
 )
 
-print(result)
+
+print(result.)
