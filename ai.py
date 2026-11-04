@@ -1,4 +1,6 @@
 from openai import OpenAI
+from tool import tool, FUNCTION_MAP
+
 
 
 client = OpenAI(
@@ -21,11 +23,6 @@ while True:
     result = client.chat.completions.create(
     model = 'qwen3:1.7b',
     messages=inp
+    tools=tool
 )
-    messag.append({
-        'role': 'assistant',
-        'content': result.choices[0].message.content
-    })
-
-
-print(result.choices[0].message.content)
+    
