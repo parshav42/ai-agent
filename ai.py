@@ -1,3 +1,5 @@
+import json
+
 from openai import OpenAI
 from tool import tool, FUNCTION_MAP
 
@@ -22,7 +24,36 @@ while True:
     
     result = client.chat.completions.create(
     model = 'qwen3:1.7b',
-    messages=inp
+    messages=inp,
     tools=tool
 )
-    
+
+    msg = result.choices[0].message
+    if msg.tool:
+        messag.append(msg)
+
+    for tool_call in msg.tool_calls:
+        tool_name = tool_call.name
+        tool_args = json.load(tool_call.arguments)
+        fn = FUNCTION_MAP.get(tool_name)
+        result = fn(**tool_args)
+
+        messag.append({
+            'role':'assistant',
+            'tool_id':tool_call.tool_id,
+            'content': result
+        })
+    result = client.chat.completions.create(
+        model = 'qwen3:1.7b',
+        messages=messag
+    )
+
+    msg = result.choices[0].message
+
+messag.append({
+    'role':'assistant',
+    'content': msg.content
+})
+
+
+print(msg.content)

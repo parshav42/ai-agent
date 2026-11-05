@@ -14,13 +14,11 @@ tool =[
             'description': 'this help to get current time now',
             'parameters': {
                 'type': 'object',
-                'properties': {},
+                'properties': {},},
         },
 
-    },
-
     }
-
+s
 ]
 
 
