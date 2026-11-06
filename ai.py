@@ -9,51 +9,42 @@ client = OpenAI(
     base_url = 'http://127.0.0.1:11434/v1',
     api_key = 'dumy'
 )
-messag = []
+messages = []
 
 while True:
     inp = input('Parshav:')
     if inp == 'exit':
         break
-    messag.append({
+    messages.append({
         'role': 'user',
         'content': inp
     })
 
+    while True:
+        result = client.chat.completions.create(
+            model='qwen3:1.7b',
+            messages=messages,
+            tools=tool
+            
+        )
+        msg = result.choices[0].message
+        messages.append(msg.model_dump(exclude_none=True))
 
-    
-    result = client.chat.completions.create(
-    model = 'qwen3:1.7b',
-    messages=inp,
-    tools=tool
-)
+        if not msg.tool_calls:
+            break
 
-    msg = result.choices[0].message
-    if msg.tool:
-        messag.append(msg)
+        for tool_call in msg.tool_calls:
+            tool_name = tool_call.function.name
+            fn = FUNCTION_MAP.get(tool_name)
+            if fn is None:
+                raise ValueError(f'Unknown tool: {tool_name}')
 
-    for tool_call in msg.tool_calls:
-        tool_name = tool_call.name
-        tool_args = json.load(tool_call.arguments)
-        fn = FUNCTION_MAP.get(tool_name)
-        result = fn(**tool_args)
+            tool_args = json.loads(tool_call.function.arguments)
+            tool_result = fn(**tool_args)
+            messages.append({
+                'role': 'tool',
+                'tool_call_id': tool_call.id,
+                'content': str(tool_result)
+            })
 
-        messag.append({
-            'role':'assistant',
-            'tool_id':tool_call.tool_id,
-            'content': result
-        })
-    result = client.chat.completions.create(
-        model = 'qwen3:1.7b',
-        messages=messag
-    )
-
-    msg = result.choices[0].message
-
-messag.append({
-    'role':'assistant',
-    'content': msg.content
-})
-
-
-print(msg.content)
+    print('robo:', msg.content, flush=True)

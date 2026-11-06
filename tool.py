@@ -4,7 +4,8 @@ def get_time():
     return datetime.now().strftime('%y-%m-%d %h:%m:%s')
 
 
-
+d = get_time()
+print(d)
 
 tool =[
     {
@@ -17,8 +18,8 @@ tool =[
                 'properties': {},},
         },
 
-    }
-s
+    },
+
 ]
 
 
