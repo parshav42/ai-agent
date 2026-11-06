@@ -2,11 +2,12 @@ import json
 
 from openai import OpenAI
 from tool import tool, FUNCTION_MAP
-
+from dotenv import load_dotenv
+import os 
 
 
 client = OpenAI(
-    base_url = 'http://127.0.0.1:11434/v1',
+    base_url = os.getenv('BASE_URL'),
     api_key = 'dumy'
 )
 messages = []

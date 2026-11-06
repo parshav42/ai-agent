@@ -1,11 +1,9 @@
 from datetime import datetime
 
 def get_time():
-    return datetime.now().strftime('%y-%m-%d %h:%m:%s')
+    return datetime.now()
 
 
-d = get_time()
-print(d)
 
 tool =[
     {
