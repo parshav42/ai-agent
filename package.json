@@ -1,0 +1,127 @@
+{
+  "name": "codepilot",
+  "displayName": "CodePilot",
+  "description": "Local-first AI coding assistant for VS Code",
+  "version": "0.1.0",
+  "publisher": "codepilot",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onView:codepilot.chatView",
+    "onCommand:codepilot.open",
+    "onCommand:codepilot.newConversation"
+  ],
+  "categories": [
+    "Other",
+    "Machine Learning",
+    "Programming Languages"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "codepilot.open",
+        "title": "CodePilot: Open Chat"
+      },
+      {
+        "command": "codepilot.newConversation",
+        "title": "CodePilot: New Conversation"
+      },
+      {
+        "command": "codepilot.addCurrentFile",
+        "title": "CodePilot: Add Current File to Context"
+      },
+      {
+        "command": "codepilot.addSelection",
+        "title": "CodePilot: Add Selection to Context"
+      },
+      {
+        "command": "codepilot.listWorkspaceFiles",
+        "title": "CodePilot: List Workspace Files"
+      },
+      {
+        "command": "codepilot.searchWorkspace",
+        "title": "CodePilot: Search Workspace"
+      },
+      {
+        "command": "codepilot.searchFileNames",
+        "title": "CodePilot: Search Workspace File Names"
+      },
+      {
+        "command": "codepilot.findFunctions",
+        "title": "CodePilot: Find Functions"
+      },
+      {
+        "command": "codepilot.findClasses",
+        "title": "CodePilot: Find Classes"
+      },
+      {
+        "command": "codepilot.findImports",
+        "title": "CodePilot: Find Imports"
+      },
+      {
+        "command": "codepilot.findReferences",
+        "title": "CodePilot: Find Symbol References"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "codepilot",
+          "title": "CodePilot",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "codepilot": [
+        {
+          "type": "webview",
+          "id": "codepilot.chatView",
+          "name": "CodePilot"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "CodePilot",
+      "properties": {
+        "codepilot.backendUrl": {
+          "type": "string",
+          "default": "http://localhost:8000",
+          "description": "FastAPI backend URL for CodePilot.",
+          "scope": "window"
+        },
+        "codepilot.defaultModel": {
+          "type": "string",
+          "default": "qwen3:1.7b",
+          "description": "Default model selected when the backend is reachable.",
+          "scope": "window"
+        },
+        "codepilot.ignoredPaths": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "description": "Workspace-relative glob patterns excluded from CodePilot search and context.",
+          "scope": "resource"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.0",
+    "@types/node": "^20.11.30",
+    "@types/vscode": "^1.90.0",
+    "@vscode/test-electron": "^2.4.1",
+    "mocha": "^12.0.3",
+    "typescript": "^5.5.4"
+  }
+}
